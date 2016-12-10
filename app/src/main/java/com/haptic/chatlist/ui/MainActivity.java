@@ -9,10 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.google.gson.Gson;
 import com.haptic.chatlist.R;
 import com.haptic.chatlist.communication.ApiClient;
 import com.haptic.chatlist.communication.ApiInterface;
 import com.haptic.chatlist.helper.Constants;
+import com.haptic.chatlist.helper.Utility;
 import com.haptic.chatlist.model.Chat;
 
 import java.util.Iterator;
@@ -20,6 +22,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -98,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Chat> call, Response<Chat> response) {
 
                 Log.d("OnResponse", " -- "+response.body());
+                Gson gson = new Gson();
+                Utility.saveStringDataInPref(MainActivity.this, "chatData", gson.toJson(response.body()));
                 showContent();
             }
 
