@@ -5,8 +5,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
+    <!-- Strings for conttent description -->
     <string name="contentDesc_errorTitle">Text error title.</string>
     <string name="contentDesc_errorDetail">Text error description.</string>
+    <string name="contentDesc_chat">Group chat beetween different users.</string>
 
     <!-- Strings for text views -->
     <string name="txt_ErrorTitle">Error</string>

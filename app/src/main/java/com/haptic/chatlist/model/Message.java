@@ -2,12 +2,18 @@
 package com.haptic.chatlist.model;
 
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 public class Message {
 
     private String body;
     private String username;
     private String name;
+    @SerializedName("image-url")
     private String image_url;
+    @SerializedName("message-time")
     private String message_time;
 
     /**

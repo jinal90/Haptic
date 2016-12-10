@@ -1,13 +1,19 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list"
+    android:name="com.udacity.food.feasta.foodfeasta.ui.MenuFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.haptic.chatlist.ui.ChatFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-</FrameLayout>
+    android:layout_marginBottom="4dp"
+    android:layout_marginEnd="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:contentDescription="@string/contentDesc_chat"
+    android:paddingTop="5dp"
+    app:layoutManager="LinearLayoutManager"
+    tools:context=".ui.ChatFragment"
+    tools:listitem="@layout/chat_row" />
