@@ -1,14 +1,19 @@
 package com.haptic.chatlist.ui;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.haptic.chatlist.R;
 import com.haptic.chatlist.model.Chat;
 import com.haptic.chatlist.model.Message;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -20,7 +25,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
     private Chat chatObj;
 
-    ChatAdapter(Chat chatObj){
+    ChatAdapter(Chat chatObj) {
         this.chatObj = chatObj;
     }
 
@@ -33,11 +38,36 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ChatAdapter.MyViewHolder holder, int position) {
-        Message msg = chatObj.getMessages().get(position);
+    public void onBindViewHolder(final ChatAdapter.MyViewHolder holder, int position) {
+        final Message msg = chatObj.getMessages().get(position);
         holder.tvName.setText(msg.getName());
         holder.tvMessage.setText(msg.getBody());
         holder.tvTimestamp.setText(msg.getMessage_time());
+
+        if (!TextUtils.isEmpty(msg.getImage_url()))
+            Picasso.with(holder.itemView.getContext())
+                    .load(msg.getImage_url())
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .placeholder(holder.itemView.getResources().getDrawable(R.drawable.ic_face_black_24dp))
+                    .error(holder.itemView.getResources().getDrawable(R.drawable.ic_face_black_24dp))
+                    .into(holder.ivPicture, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            Picasso.with(holder.itemView.getContext())
+                                    .load(msg.getImage_url())
+                                    .placeholder(holder.itemView.getResources().getDrawable(R.drawable.ic_face_black_24dp))
+                                    .error(holder.itemView.getResources().getDrawable(R.drawable.ic_face_black_24dp))
+                                    .into(holder.ivPicture);
+                        }
+                    });
+        else{
+            holder.ivPicture.setImageResource(R.drawable.ic_face_black_24dp);
+        }
     }
 
     @Override
@@ -47,12 +77,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView tvName, tvMessage, tvTimestamp;
+        public ImageView ivPicture;
 
         public MyViewHolder(View view) {
             super(view);
             tvName = (TextView) view.findViewById(R.id.tvUsername);
             tvMessage = (TextView) view.findViewById(R.id.tvMessage);
             tvTimestamp = (TextView) view.findViewById(R.id.tvTimeStamp);
+            ivPicture = (ImageView) view.findViewById(R.id.ivUserPic);
         }
     }
 }
