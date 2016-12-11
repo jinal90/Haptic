@@ -11,8 +11,13 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.haptic.chatlist.R;
+import com.haptic.chatlist.model.Chat;
+import com.haptic.chatlist.model.Count;
+import com.haptic.chatlist.model.Message;
 
+import java.util.HashMap;
 import java.util.concurrent.Callable;
 
 /**
@@ -109,6 +114,42 @@ public class Utility {
         TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
         textView.setTextColor(ContextCompat.getColor(view.getContext(), R.color.primary_text));
         snackbar.show();
+    }
+
+    public static HashMap<String, Count> processChatData(Context context){
+        Gson gson = new Gson();
+        Chat chatObj = gson.fromJson(getSavedStringDataFromPref(context, "chatData"), Chat.class);
+
+        HashMap<String, Count> userMessageCountMap = new HashMap<>();
+
+        for (Message msg : chatObj.getMessages()){
+
+            if(userMessageCountMap.get(msg.getUsername()) != null){
+                userMessageCountMap.get(msg.getUsername())
+                        .setTotalCount(userMessageCountMap
+                                .get(msg.getUsername()).getTotalCount() + 1);
+
+                if(msg.isFavorite()){
+                    userMessageCountMap.get(msg.getUsername())
+                            .setTotalFavorite(userMessageCountMap
+                                    .get(msg.getUsername()).getTotalFavorite() + 1);
+                }
+            }else{
+                Count count = new Count();
+                count.setName(msg.getName());
+                count.setImageUrl(msg.getImage_url());
+                count.setTotalCount(1);
+                if(msg.isFavorite())
+                    count.setTotalFavorite(1);
+                else
+                    count.setTotalFavorite(0);
+
+                userMessageCountMap.put(msg.getUsername(), count);
+            }
+
+        }
+
+        return  userMessageCountMap;
     }
 
 }

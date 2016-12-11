@@ -14,4 +14,8 @@
     <string name="txt_ErrorTitle">Error</string>
     <string name="txt_ErrorDesc">OOPS! There seems to be some issue loading data.</string>
 
+    <!-- Strings for tabs -->
+    <string name="tab_chat">Chat</string>
+    <string name="tab_message">Messages</string>
+
 </resources>

@@ -10,11 +10,13 @@ public class Message {
 
     private String body;
     private String username;
+    @SerializedName("Name")
     private String name;
     @SerializedName("image-url")
     private String image_url;
     @SerializedName("message-time")
     private String message_time;
+    private boolean isFavorite;
 
     /**
      * 
@@ -106,4 +108,21 @@ public class Message {
         this.message_time = message_time;
     }
 
+    /**
+     *
+     * @return
+     *      The Favorite flag
+     */
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    /**
+     *
+     * @param favorite
+     *      The Favorite flag
+     */
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
 }
