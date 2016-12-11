@@ -38,11 +38,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(final ChatAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(final ChatAdapter.MyViewHolder holder, final int position) {
         final Message msg = chatObj.getMessages().get(position);
         holder.tvName.setText(msg.getName());
         holder.tvMessage.setText(msg.getBody());
         holder.tvTimestamp.setText(msg.getMessage_time());
+        if(msg.isFavorite()){
+            holder.ivFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
+        }else{
+            holder.ivFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
+        }
 
         if (!TextUtils.isEmpty(msg.getImage_url()))
             Picasso.with(holder.itemView.getContext())
@@ -68,6 +73,21 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
         else{
             holder.ivPicture.setImageResource(R.drawable.ic_face_black_24dp);
         }
+
+        holder.ivFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(msg.isFavorite()){
+                    msg.setFavorite(false);
+                    chatObj.getMessages().get(position).setFavorite(false);
+                    holder.ivFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                }else{
+                    msg.setFavorite(true);
+                    chatObj.getMessages().get(position).setFavorite(true);
+                    holder.ivFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
+                }
+            }
+        });
     }
 
     @Override
@@ -77,7 +97,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView tvName, tvMessage, tvTimestamp;
-        public ImageView ivPicture;
+        public ImageView ivPicture, ivFavorite;
 
         public MyViewHolder(View view) {
             super(view);
@@ -85,6 +105,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
             tvMessage = (TextView) view.findViewById(R.id.tvMessage);
             tvTimestamp = (TextView) view.findViewById(R.id.tvTimeStamp);
             ivPicture = (ImageView) view.findViewById(R.id.ivUserPic);
+            ivFavorite = (ImageView) view.findViewById(R.id.ivFavorite);
         }
     }
 }
