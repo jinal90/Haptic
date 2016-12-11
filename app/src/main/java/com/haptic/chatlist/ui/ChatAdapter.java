@@ -46,7 +46,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
         if(msg.isFavorite()){
             holder.ivFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
         }else{
-            holder.ivFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
+            holder.ivFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
         }
 
         if (!TextUtils.isEmpty(msg.getImage_url()))
