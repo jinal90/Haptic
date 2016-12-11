@@ -39,19 +39,6 @@ public class Utility {
         return prefs.getString(key, "");
     }
 
-    public static void saveIntDataInPref(Context context, String key,
-                                         int data) {
-        SharedPreferences prefs = context.getSharedPreferences(
-                context.getPackageName(), Context.MODE_PRIVATE);
-        prefs.edit().putInt(key, data).commit();
-    }
-
-    public static int getSavedIntDataFromPref(Context context, String key) {
-        SharedPreferences prefs = context.getSharedPreferences(
-                context.getPackageName(), Context.MODE_PRIVATE);
-        return prefs.getInt(key, 0);
-    }
-
     public static boolean isOnline(Context context) {
         ConnectivityManager connManager = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -118,7 +105,7 @@ public class Utility {
 
     public static HashMap<String, Count> processChatData(Context context){
         Gson gson = new Gson();
-        Chat chatObj = gson.fromJson(getSavedStringDataFromPref(context, "chatData"), Chat.class);
+        Chat chatObj = gson.fromJson(getSavedStringDataFromPref(context, Constants.CHAT_DATA), Chat.class);
 
         HashMap<String, Count> userMessageCountMap = new HashMap<>();
 

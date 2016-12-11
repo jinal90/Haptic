@@ -8,14 +8,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.haptic.chatlist.R;
+import com.haptic.chatlist.helper.Constants;
+import com.haptic.chatlist.helper.Utility;
 import com.haptic.chatlist.model.Chat;
 import com.haptic.chatlist.model.Message;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 /**
  * Created by jinal on 12/10/2016.
@@ -24,9 +25,11 @@ import java.util.ArrayList;
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> {
 
     private Chat chatObj;
+    private Gson gson;
 
     ChatAdapter(Chat chatObj) {
         this.chatObj = chatObj;
+        gson = new Gson();
     }
 
     @Override
@@ -43,9 +46,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
         holder.tvName.setText(msg.getName());
         holder.tvMessage.setText(msg.getBody());
         holder.tvTimestamp.setText(msg.getMessage_time());
-        if(msg.isFavorite()){
+        if (msg.isFavorite()) {
             holder.ivFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
-        }else{
+        } else {
             holder.ivFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
         }
 
@@ -70,22 +73,25 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
                                     .into(holder.ivPicture);
                         }
                     });
-        else{
+        else {
             holder.ivPicture.setImageResource(R.drawable.ic_face_black_24dp);
         }
 
         holder.ivFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(msg.isFavorite()){
+                if (msg.isFavorite()) {
                     msg.setFavorite(false);
                     chatObj.getMessages().get(position).setFavorite(false);
                     holder.ivFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                }else{
+                } else {
                     msg.setFavorite(true);
                     chatObj.getMessages().get(position).setFavorite(true);
                     holder.ivFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
                 }
+
+                String data = gson.toJson(chatObj);
+                Utility.saveStringDataInPref(holder.itemView.getContext(), Constants.CHAT_DATA, data);
             }
         });
     }

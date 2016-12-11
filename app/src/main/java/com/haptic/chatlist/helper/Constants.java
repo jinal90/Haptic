@@ -15,6 +15,8 @@ public class Constants {
     public static final int CHAT_LIST = 11;
     public static final int MESSAGE = 12;
 
+    public static final String CHAT_DATA = "chatData";
+
     public static final HashMap<String, Integer> TAB_HASHMAP;
     static{
         TAB_HASHMAP = new HashMap<>();

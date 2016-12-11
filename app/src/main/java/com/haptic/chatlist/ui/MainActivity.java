@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -13,6 +14,7 @@ import com.google.gson.Gson;
 import com.haptic.chatlist.R;
 import com.haptic.chatlist.communication.ApiClient;
 import com.haptic.chatlist.communication.ApiInterface;
+import com.haptic.chatlist.helper.Constants;
 import com.haptic.chatlist.helper.Utility;
 import com.haptic.chatlist.model.Chat;
 
@@ -48,7 +50,19 @@ public class MainActivity extends AppCompatActivity {
     public void setupUI() {
         setSupportActionBar(toolbar);
         showProgressIndicator();
-        fetchContent();
+        String data = Utility.getSavedStringDataFromPref(MainActivity.this, Constants.CHAT_DATA);
+        //Versioning should be implemented instead
+        if (TextUtils.isEmpty(data))
+            fetchContent();
+        else {
+            if (Utility.isOnline(this))
+                showContent();
+            else {
+                Utility.showSnackbar(rlErrorView, getString(R.string.network_error));
+                showErrorView();
+            }
+        }
+
     }
 
     public void showProgressIndicator() {
@@ -97,14 +111,18 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.d("OnResponse", " -- " + response.body());
                 Gson gson = new Gson();
-                Utility.saveStringDataInPref(MainActivity.this, "chatData", gson.toJson(response.body()));
+                Utility.saveStringDataInPref(MainActivity.this, Constants.CHAT_DATA, gson.toJson(response.body()));
                 showContent();
             }
 
             @Override
             public void onFailure(Call<Chat> call, Throwable t) {
                 Log.d("OnFailure", " -- ");
-                showErrorView();
+                String data = Utility.getSavedStringDataFromPref(MainActivity.this, Constants.CHAT_DATA);
+                if (TextUtils.isEmpty(data))
+                    showErrorView();
+                else
+                    showContent();
             }
         });
     }

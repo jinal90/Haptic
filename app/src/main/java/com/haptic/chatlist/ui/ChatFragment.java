@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.haptic.chatlist.R;
+import com.haptic.chatlist.helper.Constants;
 import com.haptic.chatlist.helper.Utility;
 import com.haptic.chatlist.model.Chat;
 
@@ -48,7 +49,7 @@ public class ChatFragment extends Fragment {
 
     public void showContent() {
         // Set the adapter
-        String chatJson = Utility.getSavedStringDataFromPref(getActivity(), "chatData");
+        String chatJson = Utility.getSavedStringDataFromPref(getActivity(), Constants.CHAT_DATA);
         Gson gson = new Gson();
         Chat chatObj = gson.fromJson(chatJson, Chat.class);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

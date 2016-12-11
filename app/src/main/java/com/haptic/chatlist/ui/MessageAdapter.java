@@ -42,8 +42,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
     public void onBindViewHolder(final MessageAdapter.MyViewHolder holder, int position) {
         final Count count = list.get(position);
         holder.tvName.setText(count.getName());
-        holder.tvTotalMessages.setText(String.valueOf(count.getTotalCount()));
-        holder.tvTotalFavorites.setText(String.valueOf(count.getTotalFavorite()));
+        holder.tvTotalMessages.setText(
+                String.format(holder.itemView.getContext().getString(R.string.total_message),
+                        String.valueOf(count.getTotalCount())));
+        holder.tvTotalFavorites.setText(
+                String.format(holder.itemView.getContext().getString(R.string.total_favorite),
+                        String.valueOf(count.getTotalFavorite())));
 
         if (!TextUtils.isEmpty(count.getImageUrl()))
             Picasso.with(holder.itemView.getContext())
